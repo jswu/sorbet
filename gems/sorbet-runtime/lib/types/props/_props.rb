@@ -90,10 +90,6 @@ module T::Props
     #   none is provided.
     # @option rules [T::Boolean] :immutable If true, this prop cannot be
     #   modified after an instance is created or loaded from a hash.
-    # @option rules [Class,T::Props::CustomType] :array If set, specifies the
-    #   type of individual members of a prop with `type` `Array`. This
-    #   allows for typechecking of arrays, and also for recursive
-    #   serialization of arrays of sub-{Document}s.
     # @option rules [T::Boolean] :override It is an error to redeclare a
     #   `prop` that has already been declared (including on a
     #   superclass), unless `:override` is set to `true`.

@@ -405,7 +405,7 @@ class T::Props::Decorator
     end
     type_object = type
     if !(type_object.singleton_class < T::Props::CustomType)
-      type_object = smart_coerce(type_object, array: rules[:array], enum: rules[:enum])
+      type_object = smart_coerce(type_object, enum: rules[:enum])
     end
 
     prop_validate_definition!(name, cls, rules, type_object)
@@ -595,20 +595,12 @@ class T::Props::Decorator
   end
 
   sig do
-    params(type: PropTypeOrClass, array: T.untyped, enum: T.untyped)
+    params(type: PropTypeOrClass, enum: T.untyped)
     .returns(T::Types::Base)
   end
-  private def smart_coerce(type, array:, enum:)
+  private def smart_coerce(type, enum:)
     # Backwards compatibility for pre-T::Types style
-    if !array.nil? && !enum.nil?
-      raise ArgumentError.new("Cannot specify both :array and :enum options")
-    elsif !array.nil?
-      if type == Set
-        T::Set[array]
-      else
-        T::Array[array]
-      end
-    elsif !enum.nil?
+    if !enum.nil?
       if T::Utils.unwrap_nilable(type)
         T.nilable(T.enum(enum))
       else
